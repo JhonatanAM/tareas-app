@@ -6,7 +6,9 @@ function App() {
 
   return (
     <TasksProvider>
-      <AppRoutes />
+      <div className="app-container">
+        <AppRoutes />
+      </div>
     </TasksProvider>
   )
 }

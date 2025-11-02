@@ -1,0 +1,17 @@
+.tasks-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    color: #f7efd2;
+}
+
+.tasks-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100vh;
+    
+    display: flex;
+    flex-direction: column;
+}
