@@ -1,22 +1,14 @@
-import { useTasks } from "../../Provider/TasksProvider";
+import { useTasks } from "../../../Provider/TasksProvider";
 import TaskItem from "../taskItem/TaskItem";
 import styles from "./TaskList.module.css";
 
 export default function TaskList() {
-    const { tasks, totalPages, page, fetchTasks, toggleComplete } = useTasks();
+    const { tasks, totalPages, page, fetchTasks } = useTasks();
 
     return (
         <div className={styles.container}>
             {tasks.map((task) => (
                 <div key={task.id}>
-                    <label className={styles.checkbox}>
-                        <input
-                            type="checkbox"
-                            checked={task.completed}
-                            onChange={() => toggleComplete(task.id)}
-                        />
-                        Completada
-                    </label>
                     <TaskItem task={task} />
                 </div>
             ))}

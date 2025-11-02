@@ -1,28 +1,36 @@
 import style from "../../App.module.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import './HomePage.css';
 
 export default function HomePage() {
-    return (
-        <>
-            <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <Link
-                        className={style.button}
-                        to="/task-list"
-                        aria-label="Ver tasks"
-                    >
-                        Ver tareas
-                    </Link>
+    const navigate = useNavigate();
 
-                    <Link
-                        className={style.button}
-                        to="/"
-                        aria-label="Ir a taskPage"
-                    >
-                        Simular Api
-                    </Link>
-                </div>
+    const handleClick = (route: string) => {
+        navigate(route);
+    };
+    return (
+        <div className="button-container">
+            <h1 className="home-title"> PRUEBA TECNICA KERAUNOS</h1>
+            <div className="button-wrapper">
+                <Button
+                    variant="primary"
+                    className={style.button}
+                    onClick={() => handleClick("/task-list")}
+                    aria-label="Ver tasks"
+                >
+                    Ver tareas
+                </Button>
+
+                <Button
+                    variant="secondary"
+                    className={style.button}
+                    onClick={() => handleClick("/")}
+                    aria-label="Ir a taskPage"
+                >
+                    Simular Api
+                </Button>
             </div>
-        </>
+        </div>
     );
 }

@@ -1,10 +1,10 @@
-import TaskList from "../../../components/taskList/TaskList";
-
+import TaskList from "../../../components/tasks/taskList/TaskList";
+import './TasksPage.css';
 
 export default function TasksPage() {
     return (
-        <div>
-            <h1>Lista de Tareas</h1>
+        <div className="tasks-container">
+            <h1 className="tasks-title">Lista de Tareas</h1>
             <TaskList />
         </div>
     );

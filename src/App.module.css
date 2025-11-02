@@ -1,9 +1,17 @@
+.app-container {
+    display: flex;
+    justify-content: center;
+}
+
+
 .button {
-    padding: '0.6rem 1.2rem';
-    border-radius: 6;
-    border: 'none';
-    background: '#2563eb';
-    color: '#fff';
-    cursor: 'pointer';
-    font-size: '1rem';
+    background-color: #eed7a1;
+    color: #475c6c;
+    border: none;
+}
+
+
+.button:hover {
+    background-color: #d4b483;
+    color: #ffffff;
 }
