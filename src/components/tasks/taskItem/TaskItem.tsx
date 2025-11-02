@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useTasks } from "../../../Provider/TasksProvider";
 import * as TaskService from "../../../services/tasks.service";
 import Card from 'react-bootstrap/Card';
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 
 interface Props {
     task: Task;
@@ -60,7 +60,7 @@ export default function TaskItem({ task }: Props) {
                                 <input
                                     type="checkbox"
                                     checked={task.completed}
-                                    onChange={() => toggleComplete(task.id)}
+                                    onChange={() => { toggleComplete(task.id), setEditing(false) }}
                                 />
                             </label>
                             <div className="row">

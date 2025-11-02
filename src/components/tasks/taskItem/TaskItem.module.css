@@ -28,6 +28,15 @@
     transition: height 0.4s ease-in, opacity 1s ease-in;
 }
 
+.taskForm label {
+    text-align: end;
+}
+
+
+.taskForm label input{
+    margin-left: 10px;
+}
+
 .hideDetails {
     height: 0;
     opacity: 0;

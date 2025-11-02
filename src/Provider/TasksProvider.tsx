@@ -22,8 +22,7 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const res = await TaskService.getTasks();
             setTasks(res.data);
-            console.log(res.data);
-
+            
             setTotalPages(Math.ceil(res.data.length / 5));
             setCurrentPage(pageNum);
         } finally {
