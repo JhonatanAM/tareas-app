@@ -7,10 +7,9 @@
 }
 
 .tasks-container {
-    max-width: 600px;
+    max-width: 90%;
     margin-left: auto;
     margin-right: auto;
-    height: 100vh;
     
     display: flex;
     flex-direction: column;

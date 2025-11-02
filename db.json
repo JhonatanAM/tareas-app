@@ -4,7 +4,259 @@
       "id": "1",
       "title": "Comprar regalo",
       "description": "Comprar regalo para el cumpleaños de Ana",
-      "dueDate": "2025-11-05T18:00:00.000Z",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "2",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "3",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "4",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "5",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "6",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "7",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "8",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "9",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    },
+    {
+      "id": "10",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
       "status": "pending",
       "notes": [
         {
