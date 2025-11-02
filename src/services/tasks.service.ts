@@ -3,8 +3,8 @@ import type { Task } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
-export const getTasks = (page = 1, limit = 5) => {
-    return axios.get<Task[]>(`${API_URL}/tasks?_page=${page}&_limit=${limit}`);
+export const getTasks = () => {
+    return axios.get<Task[]>(`${API_URL}/tasks`);
 };
 
 

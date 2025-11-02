@@ -1,10 +1,13 @@
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
 import styles from "./TaskItem.module.css";
 import type { Task } from "../../../types";
 import { useState } from "react";
 import { useTasks } from "../../../Provider/TasksProvider";
 import * as TaskService from "../../../services/tasks.service";
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+import { useForm } from "react-hook-form";
 
 interface Props {
     task: Task;
@@ -13,79 +16,118 @@ interface Props {
 export default function TaskItem({ task }: Props) {
     const { deleteTask, fetchTasks, toggleComplete } = useTasks();
     const [editing, setEditing] = useState(false);
-    const [title, setTitle] = useState(task.title);
-    const [description, setDescription] = useState(task.description);
 
     const lastStatus = task.history.at(-1)?.status || task.status;
 
-    const handleSave = async () => {
-        await TaskService.updateTask(task.id, { title, description });
+    const handleSave = async (data: Task) => {
+        console.log(data);
+
+        await TaskService.updateTask(task.id, data);
         setEditing(false);
         fetchTasks();
     };
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<Task>({
+        defaultValues: task || {
+            title: "",
+            description: "",
+            dueDate: "",
+            status: "pending",
+            notes: [""],
+            completed: false,
+        },
+    });
+
     return (
         <div className={`${styles.card} ${task.completed ? styles.completed : ""}`}>
-            {editing ? (
-                <>
-                    <input
-                        className={styles.input}
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <textarea
-                        className={styles.textarea}
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                    <button onClick={handleSave}>Guardar</button>
-                    <button onClick={() => setEditing(false)}>Cancelar</button>
-                </>
-            ) : (
-                <>
-                    <Card >
-                        <Card.Body>
-                            <Card.Title className={styles.cardTitle}>{task.title}
-                                <label>
-                                    Completada
-                                    <input
-                                        type="checkbox"
-                                        checked={task.completed}
-                                        onChange={() => toggleComplete(task.id)}
-                                    />
-                                </label>
+            <>
+                <Card >
+                    <Card.Body>
+                        <Card.Title className={styles.cardTitle}>Tarea #{task.id} {task.title} - Estado: {lastStatus}
+                            {!editing ? <>
+                                <Button variant="primary" onClick={() => setEditing(true)} disabled={task.completed}> Editar</Button>
+                            </> : <></>}
+                        </Card.Title>
 
-                            </Card.Title>
-                            <Card.Subtitle>{task.description}</Card.Subtitle>
-                            <Card.Text>
-                                <p>
-                                    <strong>Fecha límite:</strong>{" "}
-                                    {new Date(task.dueDate).toLocaleDateString()}
-                                </p>
-                                <p>
-                                    <strong>Estado actual:</strong> {lastStatus}
-                                </p>
 
+                        <form onSubmit={handleSubmit(handleSave)} className={`${styles.taskForm} ${!editing ? styles.hideDetails : styles.showDetails}`}>
+                            <label>
+                                Completada
+                                <input
+                                    type="checkbox"
+                                    checked={task.completed}
+                                    onChange={() => toggleComplete(task.id)}
+                                />
+                            </label>
+                            <div className="row">
+                                <div className="row w-50">
+                                    <Form.Group className={styles.formGroup}>
+                                        <Form.Label>Título</Form.Label>
+                                        <Form.Control className={styles.formControl}
+                                            {...register("title", { required: "El título es obligatorio" })}
+                                            disabled={!editing}
+                                        />
+                                        {errors.title && <p className="error">{errors.title.message}</p>}
+                                    </Form.Group>
+
+                                    <Form.Group className={styles.formGroup}>
+                                        <Form.Label>Descripción</Form.Label>
+                                        <Form.Control className={styles.formControl} as="textarea" {...register("description")} disabled={!editing} />
+                                    </Form.Group >
+                                </div>
+                                <div className="row w-50">
+                                    <Form.Group className={styles.formGroup}>
+                                        <Form.Label>Fecha de vencimiento</Form.Label>
+                                        <Form.Control className={styles.formControl} type="date" {...register("dueDate")} disabled={!editing} />
+                                    </Form.Group >
+
+                                    <Form.Group className={styles.formGroup}>
+                                        <Form.Label>Estado</Form.Label>
+                                        <Form.Select className={styles.formSelect} {...register("status")} disabled={!editing}>
+                                            <option value="pending">Pendiente</option>
+                                            <option value="in-progress">En progreso</option>
+                                            <option value="completed">Completada</option>
+                                        </Form.Select>
+                                    </Form.Group >
+                                </div>
+                            </div>
+
+                            <div>
                                 {task.notes.length > 0 && (
                                     <div className={styles.notes}>
                                         <strong>Notas:</strong>
-                                        <ul>
+                                        <ListGroup as="ul">
                                             {task.notes.map((note) => (
-                                                <li key={note.id}>{note.text}</li>
+                                                <ListGroup.Item as="li" key={note.id} >
+                                                    {note.text}
+                                                </ListGroup.Item>
                                             ))}
-                                        </ul>
+                                        </ListGroup>
                                     </div>
                                 )}
 
-                            </Card.Text>
-                            <div className={styles.actions}>
-                                <Button variant="primary" onClick={() => setEditing(true)} disabled={task.completed}> Editar</Button>
-                                <Button variant="primary" onClick={() => deleteTask(task.id)} disabled={task.completed}> Eliminar</Button>
+                                <div className={styles.actions}>
+                                    {editing ? (
+                                        <button className="btn btn-primary" type="submit">Guardar</button>
+                                    ) : (
+                                        <Button variant="primary" onClick={() => setEditing(true)} disabled={task.completed}> Editar</Button>
+                                    )}
+                                    <Button
+                                        variant="primary"
+                                        onClick={() => !editing ?
+                                            deleteTask(task.id) :
+                                            setEditing(false)}
+                                        disabled={task.completed}> {editing ? 'Cancelar' : 'Eliminar'}</Button>
+                                </div>
                             </div>
-                        </Card.Body>
-                    </Card>
-                </>
-            )}
-        </div>
+                        </form>
+                    </Card.Body>
+                </Card>
+            </>
+        </div >
     );
 }

@@ -5,7 +5,7 @@ import * as TaskService from "../services/tasks.service";
 interface TasksContextProps {
     tasks: Task[];
     totalPages: number;
-    page: number;
+    currentPage: number;
     fetchTasks: (page?: number) => Promise<void>;
     toggleComplete: (id: number) => Promise<void>;
     deleteTask: (id: number) => Promise<void>;
@@ -15,16 +15,17 @@ const TasksContext = createContext<TasksContextProps>({} as TasksContextProps);
 
 export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [page, setPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
     const fetchTasks = async (pageNum = 1) => {
         try {
-            const res = await TaskService.getTasks(pageNum);
-            const total = Number(res.headers["x-total-count"]);
-            setTotalPages(Math.ceil(total / 5));
+            const res = await TaskService.getTasks();
             setTasks(res.data);
-            setPage(pageNum);
+            console.log(res.data);
+
+            setTotalPages(Math.ceil(res.data.length / 5));
+            setCurrentPage(pageNum);
         } finally {
 
         }
@@ -34,12 +35,12 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         const task = tasks.find((t) => t.id === id);
         if (!task) return;
         await TaskService.updateTask(id, { completed: !task.completed });
-        await fetchTasks(page);
+        await fetchTasks(currentPage);
     };
 
     const deleteTask = async (id: number) => {
         await TaskService.deleteTask(id);
-        await fetchTasks(page);
+        await fetchTasks(currentPage);
     };
 
     useEffect(() => {
@@ -48,7 +49,7 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <TasksContext.Provider
-            value={{ tasks, totalPages, page, fetchTasks, toggleComplete, deleteTask }}
+            value={{ tasks, totalPages, currentPage, fetchTasks, toggleComplete, deleteTask }}
         >
             {children}
         </TasksContext.Provider>
