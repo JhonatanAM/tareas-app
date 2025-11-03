@@ -21,6 +21,10 @@
     width: 50%;
 }
 
+.cardStatus {
+    flex: 1;
+}
+
 .taskForm {
     display: flex;
     flex-direction: column;

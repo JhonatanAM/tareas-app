@@ -7,8 +7,8 @@ interface TasksContextProps {
     totalPages: number;
     currentPage: number;
     fetchTasks: (page?: number) => Promise<void>;
-    toggleComplete: (id: number) => Promise<void>;
-    deleteTask: (id: number) => Promise<void>;
+    toggleComplete: (id: string) => Promise<void>;
+    deleteTask: (id: string) => Promise<void>;
 }
 
 const TasksContext = createContext<TasksContextProps>({} as TasksContextProps);
@@ -22,7 +22,7 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const res = await TaskService.getTasks();
             setTasks(res.data);
-            
+
             setTotalPages(Math.ceil(res.data.length / 5));
             setCurrentPage(pageNum);
         } finally {
@@ -30,14 +30,14 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    const toggleComplete = async (id: number) => {
+    const toggleComplete = async (id: string) => {
         const task = tasks.find((t) => t.id === id);
         if (!task) return;
         await TaskService.updateTask(id, { completed: !task.completed });
         await fetchTasks(currentPage);
     };
 
-    const deleteTask = async (id: number) => {
+    const deleteTask = async (id: string) => {
         await TaskService.deleteTask(id);
         await fetchTasks(currentPage);
     };

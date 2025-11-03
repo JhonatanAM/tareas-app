@@ -11,14 +11,17 @@ export default function TaskList() {
     return (
         <div >
             <div className={styles.container} ref={tasksRef}>
-                {tasks
+                {tasks.length ? tasks
                     .slice((currentPage - 1) * 5, currentPage * 5)
                     .map((task) => (
                         <TaskItem
                             key={task.id}
                             task={task}
                             reference={tasksRef.current} />
-                    ))}
+                    ))
+                    :
+                    <h1 className={styles.title}>Sin tareas aùn</h1>
+                }
             </div>
 
             {
