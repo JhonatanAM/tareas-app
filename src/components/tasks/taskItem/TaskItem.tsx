@@ -2,8 +2,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styles from "./TaskItem.module.css";
-import type { Task } from "../../../types";
-import { useState } from "react";
+import type { Note, Task } from "../../../types";
+import { useEffect, useState } from "react";
 import { useTasks } from "../../../Provider/TasksProvider";
 import * as TaskService from "../../../services/tasks.service";
 import Card from 'react-bootstrap/Card';
@@ -11,21 +11,69 @@ import { set, useForm } from "react-hook-form";
 
 interface Props {
     task: Task;
+    reference?: HTMLDivElement | null;
+    isCreation?: boolean;
+    actionFn?: () => void
 }
 
-export default function TaskItem({ task }: Props) {
+export default function TaskItem({ task, reference, isCreation, actionFn }: Props) {
     const { deleteTask, fetchTasks, toggleComplete } = useTasks();
-    const [editing, setEditing] = useState(false);
+    const [isNewTask] = useState<boolean>(isCreation ?? false);
+    const [editing, setEditing] = useState<boolean>(false);
+    const [addNote, setAddNote] = useState<boolean>(false);
+    const [notes, setNotes] = useState<Note[]>(task.notes || []);
 
     const lastStatus = task.history.at(-1)?.status || task.status;
 
     const handleSave = async (data: Task) => {
-        console.log(data);
-
-        await TaskService.updateTask(task.id, data);
+        data.notes = notes;
+        if (isNewTask) {
+            await TaskService.createTask(data);
+        } else {
+            await TaskService.updateTask(task.id, data);
+        }
         setEditing(false);
+        setAddNote(false);
         fetchTasks();
     };
+
+    const handleAddNote = () => {
+        setNotes([...notes, { id: Date.now().toString(), text: "" }]);
+        console.log(notes);
+
+    }
+
+    const handleEditButton = () => {
+        setEditing(true)
+    }
+
+    const handleCancelorDelete = () => {
+        if (!editing) {
+            deleteTask(task.id);
+            return;
+        }
+        if (isNewTask) {
+            actionFn?.();
+            return;
+        }
+        setEditing(false)
+    }
+
+    const handleAddNoteButton = () => { handleAddNote(); setAddNote(true); }
+
+
+    useEffect(() => {
+        const containerElem = reference;
+        if (containerElem) {
+            containerElem.scrollTop = containerElem.scrollHeight;
+        }
+
+        if (isCreation) {
+            setEditing(isCreation ?? false);
+
+        }
+    }, [editing]);
+
 
     const {
         register,
@@ -47,31 +95,37 @@ export default function TaskItem({ task }: Props) {
             <>
                 <Card >
                     <Card.Body>
-                        <Card.Title className={styles.cardTitle}>Tarea #{task.id} {task.title} - Estado: {lastStatus}
-                            {!editing ? <>
-                                <Button variant="primary" onClick={() => setEditing(true)} disabled={task.completed}> Editar</Button>
-                            </> : <></>}
-                        </Card.Title>
+                        {!isCreation &&
+                            <Card.Title className={styles.cardTitle}>Tarea #{task.id} {task.title} - Estado: {lastStatus}
+                                {!editing ? <>
+                                    <Button variant="primary" onClick={() => setEditing(true)} disabled={task.completed}> Editar</Button>
+                                </> : <></>}
+                            </Card.Title>
+                        }
 
 
                         <form onSubmit={handleSubmit(handleSave)} className={`${styles.taskForm} ${!editing ? styles.hideDetails : styles.showDetails}`}>
-                            <label>
-                                Completada
-                                <input
-                                    type="checkbox"
-                                    checked={task.completed}
-                                    onChange={() => { toggleComplete(task.id), setEditing(false) }}
-                                />
-                            </label>
+                            {!isCreation &&
+                                <label>
+                                    Completada
+                                    <input
+                                        type="checkbox"
+                                        checked={task.completed}
+                                        onChange={() => { toggleComplete(task.id), setEditing(false) }}
+                                    />
+                                </label>
+                            }
                             <div className="row">
                                 <div className="row w-50">
                                     <Form.Group className={styles.formGroup}>
                                         <Form.Label>Título</Form.Label>
-                                        <Form.Control className={styles.formControl}
-                                            {...register("title", { required: "El título es obligatorio" })}
-                                            disabled={!editing}
-                                        />
-                                        {errors.title && <p className="error">{errors.title.message}</p>}
+                                        <div className="d-flex flex-column">
+                                            <Form.Control className={`${styles.formControl} flex-grow-1 w-100`}
+                                                {...register("title", { required: "El título es obligatorio" })}
+                                                disabled={!editing}
+                                            />
+                                            {errors.title && <p className={`${styles.error}`}>{errors.title.message}</p>}
+                                        </div>
                                     </Form.Group>
 
                                     <Form.Group className={styles.formGroup}>
@@ -97,14 +151,20 @@ export default function TaskItem({ task }: Props) {
                             </div>
 
                             <div>
-                                {task.notes.length > 0 && (
+                                <strong>Notas:</strong>
+                                <Button variant="link" onClick={handleAddNoteButton}> Agregar</Button>
+                                {notes.length > 0 && (
                                     <div className={styles.notes}>
-                                        <strong>Notas:</strong>
-                                        <ListGroup as="ul">
-                                            {task.notes.map((note) => (
-                                                <ListGroup.Item as="li" key={note.id} >
-                                                    {note.text}
-                                                </ListGroup.Item>
+                                        <ListGroup as="ul" className={styles.ulContainer}>
+                                            {notes.map((note) => (
+                                                <div key={note.id} >
+                                                    {
+                                                        addNote ?
+                                                            <input type="text" defaultValue={note?.text ?? note} onChange={(e) => (note.text = e.target.value)} />
+                                                            :
+                                                            <span>{note?.text ?? note}</span>
+                                                    }
+                                                </div>
                                             ))}
                                         </ListGroup>
                                     </div>
@@ -114,13 +174,11 @@ export default function TaskItem({ task }: Props) {
                                     {editing ? (
                                         <button className="btn btn-primary" type="submit">Guardar</button>
                                     ) : (
-                                        <Button variant="primary" onClick={() => setEditing(true)} disabled={task.completed}> Editar</Button>
+                                        <Button variant="primary" onClick={handleEditButton} disabled={task.completed}> Editar</Button>
                                     )}
                                     <Button
                                         variant="primary"
-                                        onClick={() => !editing ?
-                                            deleteTask(task.id) :
-                                            setEditing(false)}
+                                        onClick={handleCancelorDelete}
                                         disabled={task.completed}> {editing ? 'Cancelar' : 'Eliminar'}</Button>
                                 </div>
                             </div>
