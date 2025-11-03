@@ -25,7 +25,7 @@ export default function HomePage() {
                 <Button
                     variant="secondary"
                     className={style.button}
-                    onClick={() => handleClick("/")}
+                    onClick={() => handleClick("/api")}
                     aria-label="Ir a taskPage"
                 >
                     Simular Api

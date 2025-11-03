@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useTasks } from "../../../Provider/TasksProvider";
 import * as TaskService from "../../../services/tasks.service";
 import Card from 'react-bootstrap/Card';
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 interface Props {
     task: Task;
@@ -23,7 +23,11 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
     const [addNote, setAddNote] = useState<boolean>(false);
     const [notes, setNotes] = useState<Note[]>(task.notes || []);
 
-
+    /*
+        @handleSave
+        @params<data>
+        Allows manage the behavior save button
+    */
     const handleSave = async (data: Task) => {
         data.notes = notes;
         if (isNewTask) {
@@ -37,16 +41,25 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
         fetchTasks();
     };
 
+    /*
+       @handleAddNote
+   */
     const handleAddNote = () => {
         setNotes([...notes, { id: Date.now().toString(), text: "" }]);
         console.log(notes);
 
     }
 
+    /*
+        @handleEditButton
+    */
     const handleEditButton = () => {
         setEditing(true)
     }
 
+    /*
+       @handleCancel
+   */
     const handleCancel = () => {
         if (isNewTask) {
             actionFn?.();
@@ -55,6 +68,9 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
         setEditing(false)
     }
 
+    /*
+       @handleDelete
+   */
     const handleDelete = () =>
         deleteTask(task.id);
 
