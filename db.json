@@ -1,0 +1,52 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Comprar regalo",
+      "description": "Comprar regalo para el cumpleaños de Ana",
+      "dueDate": "2025-11-02",
+      "status": "pending",
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Ir al centro comercial"
+        },
+        {
+          "id": "n2",
+          "text": "Buscar ideas en línea"
+        },
+        {
+          "id": "1762123140841",
+          "text": "asdaa"
+        },
+        {
+          "id": "1762123153656",
+          "text": "asd"
+        },
+        {
+          "id": "1762123686137",
+          "text": "asd"
+        },
+        {
+          "id": "1762123985424",
+          "text": "asd"
+        },
+        {
+          "id": "1762124135192",
+          "text": ""
+        }
+      ],
+      "history": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "status": "created"
+        },
+        {
+          "date": "2025-10-26T12:00:00.000Z",
+          "status": "pending"
+        }
+      ],
+      "completed": false
+    }
+  ]
+}
