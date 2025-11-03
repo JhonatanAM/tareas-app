@@ -61,11 +61,6 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.completed {
-    opacity: 0.6;
-    text-decoration: line-through;
-}
-
 .actions {
     display: flex;
     gap: 0.5rem;
@@ -89,7 +84,7 @@
 }
 
 .ulContainer {
-    height: 70px;
+    height: 85px;
     overflow: auto;
     scrollbar-width: thin;
     border: 1px solid #faf4b6

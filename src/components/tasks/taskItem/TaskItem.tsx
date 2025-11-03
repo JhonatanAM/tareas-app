@@ -61,6 +61,12 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
 
     const handleAddNoteButton = () => { handleAddNote(); setAddNote(true); }
 
+    const handleToggleComplete = () => {
+        toggleComplete(task.id);
+        task.status = "completed";
+        handleSave(task);
+        setEditing(false)
+    };
 
     useEffect(() => {
         const containerElem = reference;
@@ -126,7 +132,7 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
                                     <input
                                         type="checkbox"
                                         checked={task.completed}
-                                        onChange={() => { toggleComplete(task.id), setEditing(false) }}
+                                        onChange={handleToggleComplete}
                                     />
                                 </label>
                             }
@@ -175,7 +181,16 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
                                                 <div key={note.id} >
                                                     {
                                                         addNote ?
-                                                            <input type="text" defaultValue={note?.text ?? note} onChange={(e) => (note.text = e.target.value)} />
+                                                            <Form.Group >
+                                                                <input
+                                                                    className='m-1'
+                                                                    type="text"
+                                                                    defaultValue={note?.text ?? note}
+                                                                    {...register('notes', { required: "El campo es requerido" })}
+                                                                    onChange={(e) => (note.text = e.target.value)}
+                                                                />
+                                                                {errors.notes && <p className={`${styles.error}`}>{errors.notes.message}</p>}
+                                                            </Form.Group >
                                                             :
                                                             <span>{note?.text ?? note}</span>
                                                     }
