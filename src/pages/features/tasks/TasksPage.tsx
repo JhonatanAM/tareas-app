@@ -17,13 +17,12 @@ export default function TasksPage() {
                 {
                     createTask ? <>
                         <TaskItem task={{
-                            id: 0,
+                            id: Date.now().toLocaleString(),
                             title: "",
                             description: "",
                             dueDate: "",
                             status: "",
                             notes: [],
-                            history: [],
                             completed: false
                         }} isCreation={true} actionFn={handleActionBack} />
                     </> : <>

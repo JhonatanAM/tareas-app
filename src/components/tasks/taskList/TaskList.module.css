@@ -22,3 +22,8 @@
     background: #007bff;
     color: white;
 }
+
+.title {
+    color: #f7efd2;
+    flex: 1;
+}

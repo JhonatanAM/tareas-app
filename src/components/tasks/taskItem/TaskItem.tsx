@@ -23,12 +23,12 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
     const [addNote, setAddNote] = useState<boolean>(false);
     const [notes, setNotes] = useState<Note[]>(task.notes || []);
 
-    const lastStatus = task.history.at(-1)?.status || task.status;
 
     const handleSave = async (data: Task) => {
         data.notes = notes;
         if (isNewTask) {
             await TaskService.createTask(data);
+            actionFn?.();
         } else {
             await TaskService.updateTask(task.id, data);
         }
@@ -47,17 +47,17 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
         setEditing(true)
     }
 
-    const handleCancelorDelete = () => {
-        if (!editing) {
-            deleteTask(task.id);
-            return;
-        }
+    const handleCancel = () => {
         if (isNewTask) {
             actionFn?.();
             return;
         }
         setEditing(false)
     }
+
+    const handleDelete = () =>
+        deleteTask(task.id);
+
 
     const handleAddNoteButton = () => { handleAddNote(); setAddNote(true); }
 
@@ -96,10 +96,25 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
                 <Card >
                     <Card.Body>
                         {!isCreation &&
-                            <Card.Title className={styles.cardTitle}>Tarea #{task.id} {task.title} - Estado: {lastStatus}
+                            <Card.Title className={styles.cardTitle}>
+                                <p className={styles.cardStatus}>
+                                    Tarea {task.title} - Estado: {task.status}
+                                </p>
                                 {!editing ? <>
-                                    <Button variant="primary" onClick={() => setEditing(true)} disabled={task.completed}> Editar</Button>
-                                </> : <></>}
+                                    <Button
+                                        variant="primary"
+                                        onClick={() => setEditing(true)}
+                                        disabled={task.completed}> Editar</Button>
+                                    <Button
+                                        className='ms-2'
+                                        variant="danger"
+                                        onClick={handleDelete}
+                                    >Eliminar</Button>
+                                </> : <>
+                                    <Button
+                                        variant="danger"
+                                        onClick={handleDelete}
+                                    >Eliminar</Button></>}
                             </Card.Title>
                         }
 
@@ -178,8 +193,8 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
                                     )}
                                     <Button
                                         variant="primary"
-                                        onClick={handleCancelorDelete}
-                                        disabled={task.completed}> {editing ? 'Cancelar' : 'Eliminar'}</Button>
+                                        onClick={handleCancel}
+                                        disabled={task.completed}> Cancelar</Button>
                                 </div>
                             </div>
                         </form>

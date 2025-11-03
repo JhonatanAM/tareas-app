@@ -16,10 +16,10 @@ export const createTask = (task: Omit<Task, "id">) => {
     return axios.post<Task>(`${API_URL}/tasks`, task);
 };
 
-export const updateTask = (id: number, updates: Partial<Task>) => {
+export const updateTask = (id: string, updates: Partial<Task>) => {
     return axios.patch<Task>(`${API_URL}/tasks/${id}`, updates);
 };
 
-export const deleteTask = (id: number) => {
+export const deleteTask = (id: string) => {
     return axios.delete(`${API_URL}/tasks/${id}`);
 };
