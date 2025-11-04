@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useTasks } from "../../../Provider/TasksProvider";
 import * as TaskService from "../../../services/tasks.service";
 import Card from 'react-bootstrap/Card';
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 
 interface Props {
     task: Task;
@@ -38,6 +38,7 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
         }
         setEditing(false);
         setAddNote(false);
+        setNotes(data.notes || []);
         fetchTasks();
     };
 
@@ -46,8 +47,6 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
    */
     const handleAddNote = () => {
         setNotes([...notes, { id: Date.now().toString(), text: "" }]);
-        console.log(notes);
-
     }
 
     /*
@@ -65,7 +64,9 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
             actionFn?.();
             return;
         }
-        setEditing(false)
+        setEditing(false);
+        setAddNote(false);
+        setNotes(task.notes || []);
     }
 
     /*
@@ -193,22 +194,25 @@ export default function TaskItem({ task, reference, isCreation, actionFn }: Prop
                                 {notes.length > 0 && (
                                     <div className={styles.notes}>
                                         <ListGroup as="ul" className={styles.ulContainer}>
-                                            {notes.map((note) => (
-                                                <div key={note.id} >
+                                            {notes.map((nota, index) => (
+                                                <div key={nota.id} >
                                                     {
                                                         addNote ?
                                                             <Form.Group >
-                                                                <input
+                                                                <Form.Control
                                                                     className='m-1'
                                                                     type="text"
-                                                                    defaultValue={note?.text ?? note}
-                                                                    {...register('notes', { required: "El campo es requerido" })}
-                                                                    onChange={(e) => (note.text = e.target.value)}
+                                                                    defaultValue={nota?.text ?? nota}
+                                                                    {...register(`notes.${index}.text`, {
+                                                                        required: "El campo es requerido", onChange: (e) => {
+                                                                            nota.text = e.target.value;
+                                                                        }
+                                                                    })}
                                                                 />
                                                                 {errors.notes && <p className={`${styles.error}`}>{errors.notes.message}</p>}
                                                             </Form.Group >
                                                             :
-                                                            <span>{note?.text ?? note}</span>
+                                                            <span>{nota?.text ?? nota}</span>
                                                     }
                                                 </div>
                                             ))}

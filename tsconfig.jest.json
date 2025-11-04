@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "types": [
+            "jest",
+            "@testing-library/jest-dom",
+            "node"
+        ]
+    },
+    "include": [
+        "src"
+    ]
+}

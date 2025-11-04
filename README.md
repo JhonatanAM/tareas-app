@@ -34,3 +34,7 @@
 - **createTask(task)** → Crea una nueva tarea.  
 - **updateTask(id, updates)** → Actualiza parcialmente una tarea existente.  
 - **deleteTask(id)** → Elimina una tarea por su ID.
+
+
+## Unit test
+- `npm run test`
